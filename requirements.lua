@@ -25,6 +25,18 @@ function string:split(sep) return self:match((self:gsub("[^"..sep.."]*"..sep, "(
 globalID = 0
 function generateID() globalID = globalID + 1 return globalID end
 
+function table.copy(t)
+  local u = { }
+  for k, v in pairs(t) do
+    if type(v) == "table" then
+      u[k] = table.copy(v)
+    else
+      u[k] = v
+    end
+  end
+  return setmetatable(u, getmetatable(t))
+end
+
 -- Put any game-wide requirements in here
 require 'lib/middleclass'
 Stateful = require 'lib/stateful'
@@ -37,8 +49,11 @@ COLORS = require 'lib/colors'
 
 require 'base'
 require 'game'
+require 'block'
 
-require 'states/loading'
-require 'states/main'
-require 'states/menu'
-require 'states/game_over'
+require 'states/game/loading'
+require 'states/game/main'
+require 'states/game/menu'
+require 'states/game/game_over'
+
+require 'states/block/dropping'

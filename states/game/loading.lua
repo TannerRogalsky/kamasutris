@@ -6,6 +6,7 @@ function Loading:enteredState()
 
   -- puts loaded images into the preloaded_image hash with they key being the file name
   for index, image in ipairs(love.filesystem.enumerate('images')) do
+
     if image:match('(.*).png$') ~= nil or image:match('(.*).gif$') ~= nil or image:match('(.*).jpg$') ~= nil then
       self.loader.newImage(self.preloaded_image, image, 'images/' .. image)
     end
@@ -15,7 +16,7 @@ function Loading:enteredState()
     -- loader finished callback
     -- initialize game stuff here
 
-    self:gotoState("Menu")
+    self:gotoState("Main")
   end)
 end
 
