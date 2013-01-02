@@ -2,8 +2,7 @@ local Main = Game:addState('Main')
 
 function Main:enteredState()
   self.grid = require('grid')
-  self.grid[1][3] = 1
-  self.grid = self.grid:rotate(90)
+  self.grid[2][1] = 1
 end
 
 function Main:update(dt)
@@ -36,6 +35,19 @@ function Main:mousereleased(x, y, button)
 end
 
 function Main:keypressed(key, unicode)
+  if key == "w" then
+    self.grid = self.grid:rotate_to(0)
+  elseif key == "d" then
+    self.grid = self.grid:rotate_to(90)
+  elseif key == "s" then
+    self.grid = self.grid:rotate_to(180)
+  elseif key == "a" then
+    self.grid = self.grid:rotate_to(270)
+  elseif key == "left" then
+    self.grid = self.grid:rotate(-90)
+  elseif key == "right" then
+    self.grid = self.grid:rotate(90)
+  end
 end
 
 function Main:keyreleased(key, unicode)

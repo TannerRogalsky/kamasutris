@@ -40,16 +40,20 @@ function grid:rotate(angle)
       if rotated_grid[j] == nil then rotated_grid[j] = {} end
 
       if angle_quad == 1 then
-        rotated_grid[i][j] = self[#self - j + 1][i]
-      elseif angle_quad == 2 then
-        rotated_grid[i][j] = self[#self - j + 1][#self - i + 1]
-      elseif angle_quad == 3 then
         rotated_grid[i][j] = self[j][#self - i + 1]
+      elseif angle_quad == 2 then
+        rotated_grid[i][j] = self[#self - i + 1][#self - j + 1]
+      elseif angle_quad == 3 then
+        rotated_grid[i][j] = self[#self - j + 1][i]
       end
     end
   end
   rotated_grid.orientation = rotated_grid.orientation + angle
   return rotated_grid
+end
+
+function grid:rotate_to(angle)
+  return self:rotate(angle  - self.orientation)
 end
 
 setmetatable(grid, grid_mt)
