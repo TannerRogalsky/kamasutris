@@ -2,10 +2,18 @@ local Main = Game:addState('Main')
 
 function Main:enteredState()
   self.grid = require('grid')
-  self.grid[2][1] = 1
+  -- self.grid[2][1] = 1
+
+  self.active_block = Block:new(20/2 - math.floor(5/2),0)
+  self.active_block:gotoState("Dropping", 0, 1)
+
+  self.grid:set_block(Block:new(20/2 - math.floor(5/2), 20/2 - math.floor(5/2)))
 end
 
 function Main:update(dt)
+  cron.update(dt)
+  tween.update(dt)
+  -- self.grid:update(dt)
 end
 
 function Main:render()
@@ -18,12 +26,14 @@ function Main:render()
     [0] = "line"
   }
 
-  g.setColor(255,255,255,255)
+  g.setColor(COLORS.white:rgb())
   for i,row in ipairs(self.grid) do
     for j,cell in ipairs(row) do
       g.rectangle(draw_modes[cell], i * 25, j * 25, 25, 25)
     end
   end
+
+  self.active_block:render()
 
   self.camera:unset()
 end

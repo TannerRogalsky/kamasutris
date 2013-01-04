@@ -1,4 +1,4 @@
-local game_board_size = {x = 3, y = 3}
+local game_board_size = {x = 20, y = 20}
 
 local grid, grid_mt = {}, {}
 
@@ -28,6 +28,7 @@ for i=1,game_board_size.x do
 end
 
 grid.orientation = 0
+grid.blocks = {}
 
 function grid:rotate(angle)
   local angle_quad = angle / 90 % 4
@@ -35,6 +36,7 @@ function grid:rotate(angle)
   if angle_quad == 0 then return self end
 
   local rotated_grid = table.copy(self)
+
   for i,row in ipairs(self) do
     for j,cell in ipairs(row) do
       if rotated_grid[j] == nil then rotated_grid[j] = {} end
@@ -48,12 +50,32 @@ function grid:rotate(angle)
       end
     end
   end
+
   rotated_grid.orientation = rotated_grid.orientation + angle
+
+  for id,block in pairs(rotated_grid.blocks) do
+    block.orientation = rotated_grid.orientation
+  end
+
   return rotated_grid
 end
 
 function grid:rotate_to(angle)
   return self:rotate(angle  - self.orientation)
+end
+
+-- block is set on the board and rotates with the board now
+function grid:set_block(block)
+  self.blocks[block.id] = block
+  for i,row in ipairs(block.data) do
+    for j,cell in ipairs(row) do
+      self[i + block.x][j + block.y] = cell
+    end
+  end
+end
+
+function grid:render()
+
 end
 
 setmetatable(grid, grid_mt)

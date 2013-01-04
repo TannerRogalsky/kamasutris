@@ -2,18 +2,6 @@
 g = love.graphics
 GRAVITY = 700
 math.tau = math.pi * 2
-COLORS = setmetatable({}, {__newindex = function(t, k, v)
-  v.rgb = function(color) return color.r, color.g, color.b end
-  v.rgba = function(color) return color.r, color.g, color.b, color.a end
-  rawset(t, k, v)
-end})
-COLORS.RED =    {r = 255, g = 0,   b = 0,   a = 255}
-COLORS.GREEN =  {r = 0,   g = 255, b = 0,   a = 255}
-COLORS.BLUE =   {r = 0,   g = 0,   b = 255, a = 255}
-COLORS.WHITE =  {r = 255, g = 255, b = 255, a = 255}
-COLORS.BLACK =  {r = 0,   g = 0,   b = 0,   a = 255}
-COLORS.YELLOW = {r = 0,   g = 255, b = 255, a = 255}
-COLORS.PURPLE = {r = 255, g = 0,   b = 255, a = 255}
 
 -- The pixel grid is actually offset to the center of each pixel. So to get clean pixels drawn use 0.5 + integer increments.
 g.setPoint(2.5, "rough")
@@ -28,7 +16,7 @@ function generateID() globalID = globalID + 1 return globalID end
 function table.copy(t)
   local u = { }
   for k, v in pairs(t) do
-    if type(v) == "table" then
+    if type(v) == "table" and not instanceOf(Base, v) then
       u[k] = table.copy(v)
     else
       u[k] = v
@@ -40,12 +28,13 @@ end
 -- Put any game-wide requirements in here
 require 'lib/middleclass'
 Stateful = require 'lib/stateful'
-skiplist = require "lib/skiplist"
+skiplist = require 'lib/skiplist'
 HC = require 'lib/HardonCollider'
 inspect = require 'lib/inspect'
 require 'lib/AnAL'
 cron = require 'lib/cron'
 COLORS = require 'lib/colors'
+tween = require 'lib/tween'
 
 require 'base'
 require 'game'
