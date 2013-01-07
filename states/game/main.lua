@@ -19,19 +19,7 @@ end
 function Main:render()
   self.camera:set()
 
-  local draw_modes = {
-    [false] = "line",
-    [true] = "fill",
-    [1] = "fill",
-    [0] = "line"
-  }
-
-  g.setColor(COLORS.white:rgb())
-  for i,row in ipairs(self.grid) do
-    for j,cell in ipairs(row) do
-      g.rectangle(draw_modes[cell], i * 25, j * 25, 25, 25)
-    end
-  end
+  self.grid:render()
 
   self.active_block:render()
 
@@ -55,8 +43,10 @@ function Main:keypressed(key, unicode)
     self.grid = self.grid:rotate_to(270)
   elseif key == "left" then
     self.grid = self.grid:rotate(-90)
+    tween(1, self.grid, {draw_orientation = self.grid.orientation}, "outCubic")
   elseif key == "right" then
     self.grid = self.grid:rotate(90)
+    tween(1, self.grid, {draw_orientation = self.grid.orientation}, "outCubic")
   end
 end
 
