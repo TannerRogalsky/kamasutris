@@ -8,6 +8,7 @@ function Main:enteredState()
   self.active_block:gotoState("Dropping", 0, 1)
 
   self.grid:set_block(Block:new(20/2 - math.floor(5/2), 20/2 - math.floor(5/2)))
+  self.grid:set_block(Block:new(20/2 - math.floor(5/2) - 1, 20/2 - math.floor(5/2) - 1))
 end
 
 function Main:update(dt)

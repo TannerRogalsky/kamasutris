@@ -2,6 +2,14 @@ Grid = class('Grid', Base)
 Grid.static.game_board_size = {x = 20, y = 20}
 Grid.static.cell_size = {width = 25, height = 25}
 
+local tween_timing = 1
+local draw_modes = {
+  [false] = "line",
+  [true] = "fill",
+  [1] = "fill",
+  [0] = "line"
+}
+
 function Grid:initialize()
   for i = 1, Grid.game_board_size.x do
     self[i] = {}
@@ -17,23 +25,6 @@ function Grid:initialize()
   self.blocks = {}
 end
 
-function Grid:__tostring()
-  local strings, result = {}, ""
-
-  for i,row in ipairs(self) do
-    for j,cell in ipairs(row) do
-      if strings[j] == nil then strings[j] = {} end
-      strings[j][i] = self:get(i, j)
-    end
-  end
-
-  for i = 1, Grid.game_board_size.y do
-    result = result .. table.concat(strings[i], ", ") .. "\n"
-  end
-
-  return result
-end
-
 function Grid:rotate(angle)
   return self:rotate_to(self.orientation + angle)
 end
@@ -41,7 +32,7 @@ end
 function Grid:rotate_to(angle)
   self.orientation = angle
   tween.stop(self.tween)
-  self.tween = tween(1, self, {draw_orientation = self.orientation}, "outCubic")
+  self.tween = tween(tween_timing, self, {draw_orientation = self.orientation}, "outCubic")
   return self.orientation
 end
 
@@ -50,17 +41,12 @@ function Grid:set_block(block)
   self.blocks[block.id] = block
   for i,row in ipairs(block.data) do
     for j,cell in ipairs(row) do
-      self:set(i + block.x, j + block.y, cell)
+      if cell == 1 then
+        self:set(i + block.x, j + block.y, cell)
+      end
     end
   end
 end
-
-local draw_modes = {
-  [false] = "line",
-  [true] = "fill",
-  [1] = "fill",
-  [0] = "line"
-}
 
 function Grid:render()
   g.setCanvas(self.canvas)
@@ -106,4 +92,21 @@ function Grid:set(x, y, value, orientation)
   elseif angle_quad == 3 then
     self[#self - y + 1][x] = value
   end
+end
+
+function Grid:__tostring()
+  local strings, result = {}, ""
+
+  for i,row in ipairs(self) do
+    for j,cell in ipairs(row) do
+      if strings[j] == nil then strings[j] = {} end
+      strings[j][i] = self:get(i, j)
+    end
+  end
+
+  for i = 1, Grid.game_board_size.y do
+    result = result .. table.concat(strings[i], ", ") .. "\n"
+  end
+
+  return result
 end
