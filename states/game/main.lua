@@ -1,7 +1,7 @@
 local Main = Game:addState('Main')
 
 function Main:enteredState()
-  self.grid = require('grid')
+  self.grid = Grid:new()
   -- self.grid[2][1] = 1
 
   self.active_block = Block:new(20/2 - math.floor(5/2),0)
