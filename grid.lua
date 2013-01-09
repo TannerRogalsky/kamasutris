@@ -9,8 +9,7 @@ function grid_mt.__tostring(grid)
   for i,row in ipairs(grid) do
     for j,cell in ipairs(row) do
       if strings[j] == nil then strings[j] = {} end
-      -- strings[j][i] = grid[i][j]
-      strings[j][i] = cell
+      strings[j][i] = grid:get(i, j)
     end
   end
 
@@ -35,37 +34,13 @@ grid.canvas = g.newCanvas(grid.pixel_size.width, grid.pixel_size.height)
 grid.blocks = {}
 
 function grid:rotate(angle)
-  local angle_quad = angle / 90 % 4
-
-  if angle_quad == 0 then return self end
-
-  local rotated_grid = table.copy(self)
-
-  -- for i,row in ipairs(self) do
-  --   for j,cell in ipairs(row) do
-  --     if rotated_grid[j] == nil then rotated_grid[j] = {} end
-
-  --     if angle_quad == 1 then
-  --       rotated_grid[i][j] = self[j][#self - i + 1]
-  --     elseif angle_quad == 2 then
-  --       rotated_grid[i][j] = self[#self - i + 1][#self - j + 1]
-  --     elseif angle_quad == 3 then
-  --       rotated_grid[i][j] = self[#self - j + 1][i]
-  --     end
-  --   end
-  -- end
-
-  rotated_grid.orientation = rotated_grid.orientation + angle
-
-  for id,block in pairs(rotated_grid.blocks) do
-    block.orientation = rotated_grid.orientation
-  end
-
-  return rotated_grid
+  return self:rotate_to(self.orientation + angle)
 end
 
 function grid:rotate_to(angle)
-  return self:rotate(angle  - self.orientation)
+  self.orientation = angle
+  tween(0.1, self, {draw_orientation = self.orientation}, "outCubic")
+  return self.orientation
 end
 
 -- block is set on the board and rotates with the board now
@@ -73,7 +48,7 @@ function grid:set_block(block)
   self.blocks[block.id] = block
   for i,row in ipairs(block.data) do
     for j,cell in ipairs(row) do
-      self[i + block.x][j + block.y] = cell
+      self:set(i + block.x, j + block.y, cell)
     end
   end
 end
@@ -91,11 +66,42 @@ function grid:render()
   g.setColor(COLORS.white:rgb())
   for i,row in ipairs(self) do
     for j,cell in ipairs(row) do
+      local value = self:get(i,j)
       g.rectangle(draw_modes[cell], i * cell_size.width, j * cell_size.height, cell_size.width, cell_size.height)
     end
   end
   g.setCanvas()
   g.draw(self.canvas, g.getWidth() / 2, g.getHeight() / 2, math.rad(self.draw_orientation), 1, 1, self.pixel_size.width / 2, self.pixel_size.height / 2)
+end
+
+function grid:get(x, y, orientation)
+  orientation = orientation or self.orientation
+  local angle_quad = orientation / 90 % 4
+
+  if angle_quad == 0 then
+    return self[x][y]
+  elseif angle_quad == 1 then
+    return self[y][#self - x + 1]
+  elseif angle_quad == 2 then
+    return self[#self - x + 1][#self - y + 1]
+  elseif angle_quad == 3 then
+    return self[#self - y + 1][x]
+  end
+end
+
+function grid:set(x, y, value, orientation)
+  orientation = orientation or self.orientation
+  local angle_quad = orientation / 90 % 4
+
+  if angle_quad == 0 then
+    self[x][y] = value
+  elseif angle_quad == 1 then
+    self[y][#self - x + 1] = value
+  elseif angle_quad == 2 then
+    self[#self - x + 1][#self - y + 1] = value
+  elseif angle_quad == 3 then
+    self[#self - y + 1][x] = value
+  end
 end
 
 setmetatable(grid, grid_mt)
