@@ -39,7 +39,8 @@ end
 
 function grid:rotate_to(angle)
   self.orientation = angle
-  tween(0.1, self, {draw_orientation = self.orientation}, "outCubic")
+  tween.stop(self.tween)
+  self.tween = tween(1, self, {draw_orientation = self.orientation}, "outCubic")
   return self.orientation
 end
 
@@ -66,12 +67,14 @@ function grid:render()
   g.setColor(COLORS.white:rgb())
   for i,row in ipairs(self) do
     for j,cell in ipairs(row) do
-      local value = self:get(i,j)
-      g.rectangle(draw_modes[cell], i * cell_size.width, j * cell_size.height, cell_size.width, cell_size.height)
+      -- use 0 orientation here because it's just rendering and the canvas will be rotated instead
+      local value = self:get(i,j, 0)
+      g.rectangle(draw_modes[value], i * cell_size.width, j * cell_size.height, cell_size.width, cell_size.height)
     end
   end
   g.setCanvas()
-  g.draw(self.canvas, g.getWidth() / 2, g.getHeight() / 2, math.rad(self.draw_orientation), 1, 1, self.pixel_size.width / 2, self.pixel_size.height / 2)
+  -- g.draw(self.canvas, g.getWidth() / 2, g.getHeight() / 2, math.rad(self.draw_orientation), 1, 1, self.pixel_size.width / 2, self.pixel_size.height / 2)
+  g.draw(self.canvas, self.pixel_size.width / 2, self.pixel_size.height / 2, math.rad(self.draw_orientation), 1, 1, self.pixel_size.width / 2, self.pixel_size.height / 2)
 end
 
 function grid:get(x, y, orientation)
