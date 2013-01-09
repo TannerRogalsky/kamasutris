@@ -33,20 +33,10 @@ function Main:mousereleased(x, y, button)
 end
 
 function Main:keypressed(key, unicode)
-  if key == "w" then
-    self.grid = self.grid:rotate_to(0)
-  elseif key == "d" then
-    self.grid = self.grid:rotate_to(90)
-  elseif key == "s" then
-    self.grid = self.grid:rotate_to(180)
-  elseif key == "a" then
-    self.grid = self.grid:rotate_to(270)
-  elseif key == "left" then
-    self.grid = self.grid:rotate(-90)
-    tween(1, self.grid, {draw_orientation = self.grid.orientation}, "outCubic")
+  if key == "left" then
+    self.grid:rotate(-90)
   elseif key == "right" then
-    self.grid = self.grid:rotate(90)
-    tween(1, self.grid, {draw_orientation = self.grid.orientation}, "outCubic")
+    self.grid:rotate(90)
   end
 end
 
