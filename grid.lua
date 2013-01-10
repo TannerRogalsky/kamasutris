@@ -1,4 +1,4 @@
-Grid = class('Grid', Base)
+Grid = class('Grid', AbstractGrid)
 Grid.static.game_board_size = {x = 20, y = 20}
 Grid.static.cell_size = {width = 25, height = 25}
 
@@ -7,40 +7,43 @@ local draw_modes = {
   [false] = "line",
   [true] = "fill",
   [1] = "fill",
-  [0] = "line"
+  [0] = "line",
 }
 
 function Grid:initialize()
-  for i = 1, Grid.game_board_size.x do
-    self[i] = {}
-    for j = 1, Grid.game_board_size.y do
-      self[i][j] = 0
-    end
-  end
+  AbstractGrid.initialize(self, Grid.game_board_size.x, Grid.game_board_size.y)
 
-  self.orientation = 0
-  self.draw_orientation = 0
+  self.draw_orientation = self.orientation
   self.pixel_size = {width = Grid.game_board_size.x * Grid.cell_size.width, height = Grid.game_board_size.y * Grid.cell_size.height}
   self.canvas = g.newCanvas(self.pixel_size.width, self.pixel_size.height)
   self.blocks = {}
 end
 
-function Grid:rotate(angle)
-  return self:rotate_to(self.orientation + angle)
-end
-
 function Grid:rotate_to(angle)
   self.orientation = angle
+
+  for _,block in pairs(self.blocks) do
+    block:rotate_to(angle)
+  end
+
   tween.stop(self.tween)
   self.tween = tween(tween_timing, self, {draw_orientation = self.orientation}, "outCubic")
+
   return self.orientation
+end
+
+function Grid:can_rotate(angle, obstructions)
+  for k,v in pairs(obstructions) do
+
+  end
 end
 
 -- block is set on the board and rotates with the board now
 function Grid:set_block(block)
   self.blocks[block.id] = block
-  for i,row in ipairs(block.data) do
-    for j,cell in ipairs(row) do
+  for i,row in ipairs(block) do
+    for j,_ in ipairs(row) do
+      local cell = block:get(i, j)
       if cell == 1 then
         self:set(i + block.x, j + block.y, cell)
       end
@@ -62,36 +65,6 @@ function Grid:render()
   g.setCanvas()
   -- g.draw(self.canvas, g.getWidth() / 2, g.getHeight() / 2, math.rad(self.draw_orientation), 1, 1, self.pixel_size.width / 2, self.pixel_size.height / 2)
   g.draw(self.canvas, self.pixel_size.width / 2, self.pixel_size.height / 2, math.rad(self.draw_orientation), 1, 1, self.pixel_size.width / 2, self.pixel_size.height / 2)
-end
-
-function Grid:get(x, y, orientation)
-  orientation = orientation or self.orientation
-  local angle_quad = orientation / 90 % 4
-
-  if angle_quad == 0 then
-    return self[x][y]
-  elseif angle_quad == 1 then
-    return self[y][#self - x + 1]
-  elseif angle_quad == 2 then
-    return self[#self - x + 1][#self - y + 1]
-  elseif angle_quad == 3 then
-    return self[#self - y + 1][x]
-  end
-end
-
-function Grid:set(x, y, value, orientation)
-  orientation = orientation or self.orientation
-  local angle_quad = orientation / 90 % 4
-
-  if angle_quad == 0 then
-    self[x][y] = value
-  elseif angle_quad == 1 then
-    self[y][#self - x + 1] = value
-  elseif angle_quad == 2 then
-    self[#self - x + 1][#self - y + 1] = value
-  elseif angle_quad == 3 then
-    self[#self - y + 1][x] = value
-  end
 end
 
 function Grid:__tostring()

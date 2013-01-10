@@ -38,6 +38,7 @@ tween = require 'lib/tween'
 
 require 'base'
 require 'game'
+require 'abstract_grid'
 require 'grid'
 require 'block'
 

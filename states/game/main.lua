@@ -33,11 +33,16 @@ end
 function Main:mousereleased(x, y, button)
 end
 
+local control_map = {
+  left = function(self) self.grid:rotate(-90) end,
+  right = function(self) self.grid:rotate(90) end,
+  a = function(self) self.active_block:rotate(-90) end,
+  d = function(self) self.active_block:rotate(90) end
+}
+
 function Main:keypressed(key, unicode)
-  if key == "left" then
-    self.grid:rotate(-90)
-  elseif key == "right" then
-    self.grid:rotate(90)
+  if type(control_map[key]) == "function" then
+    control_map[key](self)
   end
 end
 

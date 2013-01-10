@@ -16,34 +16,20 @@ function Dropping:tick()
   self.x, self.y = new_x, new_y
 end
 
-function Dropping:rotate(angle)
-  local angle_quad = angle / 90 % 4
+-- function Block:rotate_to(angle)
+--   self.orientation = angle
 
-  if angle_quad == 0 then return self.data end
+--   tween.stop(self.tween)
+--   self.tween = tween(1, self, {draw_orientation = self.orientation}, "outCubic", function()
+--     self.tween = nil
+--   end)
 
-  local rotated_data = table.copy(self.data)
-  for i,row in ipairs(self.data) do
-    for j,cell in ipairs(row) do
-      if rotated_data[j] == nil then rotated_data[j] = {} end
-
-      if angle_quad == 1 then
-        rotated_data[i][j] = self.data[j][#self.data - i + 1]
-      elseif angle_quad == 2 then
-        rotated_data[i][j] = self.data[#self.data - i + 1][#self.data - j + 1]
-      elseif angle_quad == 3 then
-        rotated_data[i][j] = self.data[#self.data - j + 1][i]
-      end
-    end
-  end
-  rotated_data.orientation = rotated_data.orientation + angle
-  return rotated_data
-end
-
-function Dropping:rotate_to(angle)
-  return self:rotate(angle  - self.orientation)
-end
+--   return self.orientation
+-- end
 
 function Dropping:exitedState()
+  tween.reset(self.tween)
+  self.tween = nil
 end
 
 return Dropping
