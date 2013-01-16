@@ -5,11 +5,7 @@ function Block:initialize(x, y)
 
   self.x, self.y = x, y
 
-  self[1][3] = 1
-  self[2][3] = 1
-  self[3][3] = 1
-  self[4][3] = 1
-  self[5][3] = 1
+  self[1] = {1, 1, 1, 1, 1}
 
   self.orientation = 0
 end
@@ -20,7 +16,7 @@ function Block:render()
     for j,_ in ipairs(row) do
       local cell = self:get(i, j)
       if cell == 1 then
-        g.rectangle("fill", (i + self.x) * 25, (j + self.y) * 25, 25, 25)
+        g.rectangle("fill", (i + self.x - 1) * 25, (j + self.y - 1) * 25, 25, 25)
       end
     end
   end
