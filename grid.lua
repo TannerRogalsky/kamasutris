@@ -40,6 +40,7 @@ end
 
 -- block is set on the board and rotates with the board now
 function Grid:set_block(block)
+  block = block:copy()
   self.blocks[block.id] = block
   for i,row in ipairs(block) do
     for j,_ in ipairs(row) do
@@ -49,6 +50,21 @@ function Grid:set_block(block)
       end
     end
   end
+end
+
+function Grid:collides_with(block, orientation)
+  for i,row in ipairs(block) do
+    for j,_ in ipairs(row) do
+      local block_cell = block:get(i, j)
+      local grid_cell = self:get(i + block.x, j + block.y)
+
+      if block_cell == 1 and grid_cell == 1 then
+        return true
+      end
+    end
+  end
+
+  return false
 end
 
 function Grid:render()
@@ -64,7 +80,8 @@ function Grid:render()
   end
   g.setCanvas()
   -- g.draw(self.canvas, g.getWidth() / 2, g.getHeight() / 2, math.rad(self.draw_orientation), 1, 1, self.pixel_size.width / 2, self.pixel_size.height / 2)
-  g.draw(self.canvas, self.pixel_size.width / 2, self.pixel_size.height / 2, math.rad(self.draw_orientation), 1, 1, self.pixel_size.width / 2, self.pixel_size.height / 2)
+  g.draw(self.canvas, self.pixel_size.width / 2, self.pixel_size.height / 2, math.rad(self.draw_orientation), 1, 1, self.pixel_size.width / 2 + Grid.cell_size.width, self.pixel_size.height / 2 + Grid.cell_size.height)
+  -- g.draw(self.canvas, 0, 0, math.rad(self.draw_orientation))
 end
 
 function Grid:__tostring()

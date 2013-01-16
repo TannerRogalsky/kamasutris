@@ -26,14 +26,16 @@ function Block:render()
   end
 end
 
-function Block:collide(block)
-  local offset_x = block.x - self.x
-  local offset_y = block.y - self.y
+function Block:collides_with(other)
+  local offset_x = other.x - self.x
+  local offset_y = self.y - other.y
+  print(self.x, self.y, other.x, other.y, offset_x, offset_y)
 
   for i,row in ipairs(self) do
     for j,cell in ipairs(row) do
+      print(i, j, i + offset_x, j + offset_y)
       local self_cell = self:get(i, j)
-      local other_cell = block:get(i + offset_x, j + offset_y)
+      local other_cell = other:get(i + offset_x, j + offset_y)
 
       if self_cell == 1 and other_cell == 1 then
         return true
@@ -42,4 +44,10 @@ function Block:collide(block)
   end
 
   return false
+end
+
+function Block:copy()
+  local copy = Block:new(self.x, self.y)
+  copy.orientation = self.orientation
+  return copy
 end

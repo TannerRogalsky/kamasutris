@@ -2,7 +2,7 @@ local Dropping = Block:addState('Dropping')
 
 function Dropping:enteredState(vel_x, vel_y)
   self.velocity = {x = vel_x, y = vel_y}
-  cron.every(1, self.tick, self)
+  self.drop = cron.every(1, self.tick, self)
 end
 
 function Dropping:update(dt)
@@ -16,20 +16,10 @@ function Dropping:tick()
   self.x, self.y = new_x, new_y
 end
 
--- function Block:rotate_to(angle)
---   self.orientation = angle
-
---   tween.stop(self.tween)
---   self.tween = tween(1, self, {draw_orientation = self.orientation}, "outCubic", function()
---     self.tween = nil
---   end)
-
---   return self.orientation
--- end
-
 function Dropping:exitedState()
-  tween.reset(self.tween)
-  self.tween = nil
+  -- tween.reset(self.tween)
+  -- self.tween = nil
+  cron.cancel(self.drop)
 end
 
 return Dropping
