@@ -59,7 +59,7 @@ function Grid:render()
     for j,cell in ipairs(row) do
       -- use 0 orientation here because it's just rendering and the canvas will be rotated instead
       local value = self:get(i,j, 0)
-      g.rectangle(draw_modes[value], i * Grid.cell_size.width, j * Grid.cell_size.height, Grid.cell_size.width, Grid.cell_size.height)
+      g.rectangle(draw_modes[value], (i - 1) * Grid.cell_size.width, (j - 1) * Grid.cell_size.height, Grid.cell_size.width, Grid.cell_size.height)
     end
   end
   g.setCanvas()

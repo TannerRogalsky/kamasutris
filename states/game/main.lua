@@ -4,7 +4,7 @@ function Main:enteredState()
   self.grid = Grid:new()
   -- self.grid[2][1] = 1
 
-  self.active_block = Block:new(20/2 - math.floor(5/2),0)
+  self.active_block = Block:new(0, 0)
   self.active_block:gotoState("Dropping", 0, 1)
 
   self.grid:set_block(Block:new(20/2 - math.floor(5/2), 20/2 - math.floor(5/2)))
