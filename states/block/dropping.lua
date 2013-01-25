@@ -10,9 +10,9 @@ function Dropping:update(dt)
 end
 
 function Dropping:tick()
+  print(grid:collides_with(self))
   local new_x = self.x + self.velocity.x
   local new_y = self.y + self.velocity.y
-  -- tween(1, self, {x = new_x, y = new_y})
   self.x, self.y = new_x, new_y
 end
 
