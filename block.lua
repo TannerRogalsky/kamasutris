@@ -26,11 +26,9 @@ end
 function Block:collides_with(other)
   local offset_x = other.x - self.x
   local offset_y = self.y - other.y
-  print(self.x, self.y, other.x, other.y, offset_x, offset_y)
 
   for i,row in ipairs(self) do
     for j,cell in ipairs(row) do
-      print(i, j, i + offset_x, j + offset_y)
       local self_cell = self:get(i, j)
       local other_cell = other:get(i + offset_x, j + offset_y)
 

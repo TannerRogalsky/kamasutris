@@ -2,7 +2,7 @@ local Dropping = Block:addState('Dropping')
 
 function Dropping:enteredState(vel_x, vel_y)
   self.velocity = {x = vel_x, y = vel_y}
-  self.drop = cron.every(1, self.tick, self)
+  cron.every(1, self.tick, self)
 end
 
 function Dropping:update(dt)
@@ -20,13 +20,14 @@ function Dropping:tick()
     self.parent:set_block(self)
     self.parent.active_block = nil
     self:gotoState(nil)
+    game:new_drop()
   end
 end
 
 function Dropping:exitedState()
   -- tween.reset(self.tween)
   -- self.tween = nil
-  cron.cancel(self.drop)
+  cron.reset()
 end
 
 return Dropping

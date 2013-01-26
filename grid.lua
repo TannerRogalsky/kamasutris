@@ -69,18 +69,23 @@ function Grid:set_block(block)
     end
   end
   print(self)
-  print("**********")
 end
 
 function Grid:collides_with(block, orientation)
-  for i,row in ipairs(block) do
-    for j,_ in ipairs(row) do
-      local block_cell = block:get(i, j)
-      local grid_cell = self:get(i + block.x, j + block.y)
+  -- for i,row in ipairs(block) do
+  --   for j,_ in ipairs(row) do
+  --     local block_cell = block:get(i, j)
+  --     local grid_cell = self:get(i + block.x, j + block.y)
 
-      if block_cell == 1 and grid_cell == 1 then
-        return true
-      end
+  --     if block_cell == 1 and grid_cell == 1 then
+  --       return true
+  --     end
+  --   end
+  -- end
+  for id,other_block in pairs(self.blocks) do
+    if block:collides_with(other_block) then
+      print(block, other_block)
+      return true
     end
   end
 

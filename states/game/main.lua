@@ -1,16 +1,16 @@
 local Main = Game:addState('Main')
 
 function Main:enteredState()
+  -- self.background_music = self.preloaded_audio["main_theme.ogg"]
+  -- self.background_music:play()
+  -- self.background_music:setLooping(true)
+
   self.grid = Grid:new()
-  self.background_music = self.preloaded_audio["main_theme.ogg"]
-  self.background_music:play()
-  self.background_music:setLooping(true)
 
-  self.grid.active_block = Block:new(0, 0, self.grid)
-  self.grid.active_block:gotoState("Dropping", 0, 1)
+  self.grid:set_block(Block:new(5, 5, self.grid))
+  self.grid:set_block(Block:new(7, 7, self.grid))
 
-  self.grid:set_block(Block:new(2, 2, self.grid))
-  self.grid:set_block(Block:new(0, 10, self.grid))
+  self:new_drop()
 end
 
 function Main:update(dt)
@@ -30,6 +30,27 @@ function Main:render()
   end
 
   self.camera:unset()
+end
+
+function Main:new_drop()
+  if self.grid.active_block == nil then
+    local directions =  {
+      up = {5, 0, 0, 1},
+      right = {15, 5, -1, 0},
+      left = {0, 5, 1, 0},
+      down = {5, 20, 0, -1}
+    }
+    local choices = {}
+    for k,v in pairs(directions) do
+      table.insert(choices, k)
+    end
+    local choice_index = choices[math.random(#choices)]
+    print(choice_index)
+    local choice = directions[choice_index]
+
+    self.grid.active_block = Block:new(choice[1], choice[2], self.grid)
+    self.grid.active_block:gotoState("Dropping", choice[3], choice[4])
+  end
 end
 
 function Main:mousepressed(x, y, button)
