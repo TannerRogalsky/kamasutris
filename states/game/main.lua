@@ -62,8 +62,11 @@ end
 local control_map = {
   left = function(self) self.grid:rotate(-90) end,
   right = function(self) self.grid:rotate(90) end,
-  a = function(self) self.grid.active_block:rotate(-90) end,
-  d = function(self) self.grid.active_block:rotate(90) end
+  [" "] = function(self) self.grid.active_block:rotate(90) end,
+  w = function(self) self.grid.active_block:move_up() end,
+  a = function(self) self.grid.active_block:move_left() end,
+  s = function(self) self.grid.active_block:move_down() end,
+  d = function(self) self.grid.active_block:move_right() end
 }
 
 function Main:keypressed(key, unicode)

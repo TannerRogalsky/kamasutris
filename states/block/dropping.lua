@@ -30,4 +30,28 @@ function Dropping:exitedState()
   cron.reset()
 end
 
+function Dropping:move_up()
+  if self.velocity.x ~= 0 then
+    self.y = self.y - 1
+  end
+end
+
+function Dropping:move_left()
+  if self.velocity.y ~= 0 then
+    self.x = self.x - 1
+  end
+end
+
+function Dropping:move_down()
+  if self.velocity.x ~= 0 then
+    self.y = self.y + 1
+  end
+end
+
+function Dropping:move_right()
+  if self.velocity.y ~= 0 then
+    self.x = self.x + 1
+  end
+end
+
 return Dropping
