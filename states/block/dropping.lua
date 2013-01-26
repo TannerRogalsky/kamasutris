@@ -19,6 +19,7 @@ function Dropping:tick()
     self.x, self.y = old_x, old_y
     self.parent:set_block(self)
     self.parent.active_block = nil
+    self:gotoState(nil)
   end
 end
 
