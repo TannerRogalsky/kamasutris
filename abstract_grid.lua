@@ -25,6 +25,11 @@ function AbstractGrid:rotate_to(angle)
 end
 
 function AbstractGrid:get(x, y, orientation)
+  if x > #self or y > #self or x < 1 or y < 1 then
+    print("out of bounds")
+    return 0
+  end
+
   orientation = orientation or self.orientation
   local angle_quad = orientation / 90 % 4
 
