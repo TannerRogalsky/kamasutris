@@ -2,6 +2,9 @@ local Main = Game:addState('Main')
 
 function Main:enteredState()
   self.grid = Grid:new()
+  self.background_music = self.preloaded_audio["main_theme.ogg"]
+  self.background_music:play()
+  self.background_music:setLooping(true)
 
   self.grid.active_block = Block:new(0, 0, self.grid)
   self.grid.active_block:gotoState("Dropping", 0, 1)
