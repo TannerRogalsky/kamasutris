@@ -73,14 +73,17 @@ function Grid:render()
   g.setColor(COLORS.white:rgb())
   for i,row in ipairs(self) do
     for j,cell in ipairs(row) do
+      local x, y , w, h = (i - 1) * Grid.cell_size.width, (j - 1) * Grid.cell_size.height, Grid.cell_size.width, Grid.cell_size.height
       -- use 0 orientation here because it's just rendering and the canvas will be rotated instead
       local value = self:get(i,j, 0)
-      g.rectangle(draw_modes[value], (i - 1) * Grid.cell_size.width, (j - 1) * Grid.cell_size.height, Grid.cell_size.width, Grid.cell_size.height)
+      g.rectangle(draw_modes[value], x, y, w, h)
     end
   end
   g.setCanvas()
+  local center_x, center_y = self.pixel_size.width / 2, self.pixel_size.height / 2
+  local offset_x, offset_y = self.pixel_size.width / 2, self.pixel_size.height / 2
   -- g.draw(self.canvas, g.getWidth() / 2, g.getHeight() / 2, math.rad(self.draw_orientation), 1, 1, self.pixel_size.width / 2, self.pixel_size.height / 2)
-  g.draw(self.canvas, self.pixel_size.width / 2, self.pixel_size.height / 2, math.rad(self.draw_orientation), 1, 1, self.pixel_size.width / 2 + Grid.cell_size.width, self.pixel_size.height / 2 + Grid.cell_size.height)
+  g.draw(self.canvas, center_x, center_y, math.rad(self.draw_orientation), 1, 1, offset_x, offset_y)
   -- g.draw(self.canvas, 0, 0, math.rad(self.draw_orientation))
 end
 

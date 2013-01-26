@@ -2,21 +2,20 @@ local Main = Game:addState('Main')
 
 function Main:enteredState()
   self.grid = Grid:new()
-  -- self.grid[2][1] = 1
 
-  self.active_block = Block:new(0, 0)
+  self.active_block = Block:new(5, 0)
   self.active_block:gotoState("Dropping", 0, 1)
-  cron.every(1, function()
-    -- print(self.grid)
-    if self.grid:collides_with(self.active_block) then
-      self.grid:set_block(self.active_block)
-      self.active_block:gotoState(nil)
-      print(self.grid)
-    end
-  end)
+  -- cron.every(1, function()
+  --   -- print(self.grid)
+  --   if self.grid:collides_with(self.active_block) then
+  --     self.grid:set_block(self.active_block)
+  --     self.active_block:gotoState(nil)
+  --     print(self.grid)
+  --   end
+  -- end)
 
-  self.grid:set_block(Block:new(20/2 - math.floor(5/2), 20/2 - math.floor(5/2)))
-  self.grid:set_block(Block:new(20/2 - math.floor(5/2) - 1, 20/2 - math.floor(5/2) - 1))
+  self.grid:set_block(Block:new(10/2 - math.floor(5/2), 10/2 - math.floor(5/2)))
+  self.grid:set_block(Block:new(10/2 - math.floor(5/2) - 1, 10/2 - math.floor(5/2) - 1))
 end
 
 function Main:update(dt)
