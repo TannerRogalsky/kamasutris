@@ -3,17 +3,11 @@ local Main = Game:addState('Main')
 function Main:enteredState()
   self.grid = Grid:new()
 
-  self.active_block = Block:new(0, 0)
-  self.active_block:gotoState("Dropping", 0, 1)
-  cron.every(1, function()
-    if self.active_block and self.grid:collides_with(self.active_block) then
-      self.grid:set_block(self.active_block)
-      self.active_block = nil
-    end
-  end)
+  self.grid.active_block = Block:new(0, 0, self.grid)
+  self.grid.active_block:gotoState("Dropping", 0, 1)
 
-  self.grid:set_block(Block:new(2, 2))
-  self.grid:set_block(Block:new(0, 10))
+  self.grid:set_block(Block:new(2, 2, self.grid))
+  self.grid:set_block(Block:new(0, 10, self.grid))
 end
 
 function Main:update(dt)
@@ -27,9 +21,9 @@ function Main:render()
 
   self.grid:render()
 
-  if self.active_block then
+  if self.grid.active_block then
     g.setColor(COLORS.red:rgb())
-    self.active_block:render()
+    self.grid.active_block:render()
   end
 
   self.camera:unset()
@@ -44,8 +38,8 @@ end
 local control_map = {
   left = function(self) self.grid:rotate(-90) end,
   right = function(self) self.grid:rotate(90) end,
-  a = function(self) self.active_block:rotate(-90) end,
-  d = function(self) self.active_block:rotate(90) end
+  a = function(self) self.grid.active_block:rotate(-90) end,
+  d = function(self) self.grid.active_block:rotate(90) end
 }
 
 function Main:keypressed(key, unicode)

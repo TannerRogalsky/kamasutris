@@ -1,9 +1,10 @@
 Block = class('Block', AbstractGrid):include(Stateful)
 
-function Block:initialize(x, y)
+function Block:initialize(x, y, grid)
   AbstractGrid.initialize(self, 5, 5)
 
   self.x, self.y = x, y
+  self.parent = grid
 
   self[3] = {1, 1, 1, 1, 1}
 

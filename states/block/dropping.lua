@@ -10,10 +10,16 @@ function Dropping:update(dt)
 end
 
 function Dropping:tick()
-  local new_x = self.x + self.velocity.x
-  local new_y = self.y + self.velocity.y
+  local new_x, old_x = self.x + self.velocity.x, self.x
+  local new_y, old_y = self.y + self.velocity.y, self.y
   -- tween(1, self, {x = new_x, y = new_y})
   self.x, self.y = new_x, new_y
+
+  if self.parent:collides_with(self) then
+    self.x, self.y = old_x, old_y
+    self.parent:set_block(self)
+    self.parent.active_block = nil
+  end
 end
 
 function Dropping:exitedState()
