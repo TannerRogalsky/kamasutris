@@ -6,13 +6,14 @@ for name,shape in pairs(shapes) do
   table.insert(shape_options, name)
 end
 
-function Block:initialize(x, y, grid)
+function Block:initialize(x, y, grid, shape_type)
   AbstractGrid.initialize(self, 4, 4)
 
   self.x, self.y = x, y
   self.parent = grid
 
-  local shape = shapes[shape_options[math.random(#shape_options)]]
+  self.shape_type = shape_type or shape_options[math.random(#shape_options)]
+  local shape = shapes[self.shape_type]
   for i,row in ipairs(shape) do
     for j,cell in ipairs(row) do
       if self[i] == nil then self[i] = {} end
@@ -54,7 +55,7 @@ function Block:collides_with(other)
 end
 
 function Block:copy()
-  local copy = Block:new(self.x, self.y)
+  local copy = Block:new(self.x, self.y, self.parent, self.shape_type)
   copy.orientation = self.orientation
   return copy
 end
