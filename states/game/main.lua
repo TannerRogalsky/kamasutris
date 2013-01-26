@@ -3,19 +3,17 @@ local Main = Game:addState('Main')
 function Main:enteredState()
   self.grid = Grid:new()
 
-  self.active_block = Block:new(5, 0)
+  self.active_block = Block:new(0, 0)
   self.active_block:gotoState("Dropping", 0, 1)
-  -- cron.every(1, function()
-  --   -- print(self.grid)
-  --   if self.grid:collides_with(self.active_block) then
-  --     self.grid:set_block(self.active_block)
-  --     self.active_block:gotoState(nil)
-  --     print(self.grid)
-  --   end
-  -- end)
+  cron.every(1, function()
+    if self.active_block and self.grid:collides_with(self.active_block) then
+      self.grid:set_block(self.active_block)
+      self.active_block = nil
+    end
+  end)
 
   self.grid:set_block(Block:new(2, 2))
-  self.grid:set_block(Block:new(3, 3))
+  self.grid:set_block(Block:new(0, 10))
 end
 
 function Main:update(dt)
@@ -29,8 +27,10 @@ function Main:render()
 
   self.grid:render()
 
-  g.setColor(COLORS.red:rgb())
-  self.active_block:render()
+  if self.active_block then
+    g.setColor(COLORS.red:rgb())
+    self.active_block:render()
+  end
 
   self.camera:unset()
 end

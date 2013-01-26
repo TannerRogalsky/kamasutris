@@ -5,7 +5,7 @@ function Block:initialize(x, y)
 
   self.x, self.y = x, y
 
-  self[1] = {1, 1, 1, 1, 1}
+  self[3] = {1, 1, 1, 1, 1}
 
   self.orientation = 0
 end

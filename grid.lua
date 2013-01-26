@@ -18,7 +18,6 @@ function Grid:rotate_to(angle)
 
   for _,block in pairs(self.blocks) do
     block:rotate_to(angle)
-    print(block:get_coords())
   end
 
   tween.stop(self.tween)
@@ -36,15 +35,38 @@ end
 -- block is set on the board and rotates with the board now
 function Grid:set_block(block)
   block = block:copy()
+  local block_x, block_y = block.x, block.y
   self.blocks[block.id] = block
-  for i,row in ipairs(block) do
-    for j,_ in ipairs(row) do
+
+  local angle_quad = block.orientation / 90 % 4
+
+  local start_x, end_x, step_x = 1, #block, 1
+  local start_y, end_y, step_y = 1, #block, 1
+
+  -- if angle_quad == 0 then
+  --   start_x, end_x, step_x = 1, #block, 1
+  --   start_y, end_y, step_y = 1, #block, 1
+  -- elseif angle_quad == 1 then
+  --   start_x, end_x, step_x = #block, 1, -1
+  --   start_y, end_y, step_y = 1, #block, 1
+  -- elseif angle_quad == 2 then
+  --   start_x, end_x, step_x = #block, 1, -1
+  --   start_y, end_y, step_y = #block, 1, -1
+  -- elseif angle_quad == 3 then
+  --   start_x, end_x, step_x = 1, #block, 1
+  --   start_y, end_y, step_y = #block, 1, -1
+  -- end
+
+  for i = start_x, end_x, step_x do
+    for j = start_y, end_y, step_y do
       local cell = block:get(i, j)
       if cell == 1 then
-        self:set(i + block.x, j + block.y, cell)
+        print(i, j, block_x, block_y)
+        self:set(i + block_x, j + block_y, cell)
       end
     end
   end
+  print("**********")
 end
 
 function Grid:collides_with(block, orientation)
