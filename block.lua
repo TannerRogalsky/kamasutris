@@ -1,12 +1,24 @@
 Block = class('Block', AbstractGrid):include(Stateful)
 
+local shapes = require("block_templates")
+local shape_options = {}
+for name,shape in pairs(shapes) do
+  table.insert(shape_options, name)
+end
+
 function Block:initialize(x, y, grid)
-  AbstractGrid.initialize(self, 5, 5)
+  AbstractGrid.initialize(self, 4, 4)
 
   self.x, self.y = x, y
   self.parent = grid
 
-  self[3] = {1, 1, 1, 1, 1}
+  local shape = shapes[shape_options[math.random(#shape_options)]]
+  for i,row in ipairs(shape) do
+    for j,cell in ipairs(row) do
+      if self[i] == nil then self[i] = {} end
+      self[i][j] = cell
+    end
+  end
 
   self.orientation = 0
 end
