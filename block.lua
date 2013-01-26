@@ -10,13 +10,13 @@ function Block:initialize(x, y)
   self.orientation = 0
 end
 
-function Block:render()
-  g.setColor(COLORS.red:rgb())
+function Block:render(orientation)
+  local cell_w, cell_h = Grid.cell_size.width, Grid.cell_size.height
   for i,row in ipairs(self) do
     for j,_ in ipairs(row) do
-      local cell = self:get(i, j)
+      local cell = self:get(i, j, orientation)
       if cell == 1 then
-        g.rectangle("fill", (i + self.x - 1) * 25, (j + self.y - 1) * 25, 25, 25)
+        g.rectangle("fill", (i + self.x - 1) * cell_w, (j + self.y - 1) * cell_h, cell_w, cell_h)
       end
     end
   end
@@ -46,4 +46,19 @@ function Block:copy()
   local copy = Block:new(self.x, self.y)
   copy.orientation = self.orientation
   return copy
+end
+
+function Block:get_coords(orientation)
+  orientation = orientation or self.orientation
+  local angle_quad = orientation / 90 % 4
+
+  if angle_quad == 0 then
+    return self.x, self.y
+  elseif angle_quad == 1 then
+    return Grid.game_board_size.x - self.x, self.y
+  elseif angle_quad == 2 then
+    return Grid.game_board_size.x - self.x, Grid.game_board_size.y - self.y
+  elseif angle_quad == 3 then
+    return self.x, Grid.game_board_size.y - self.y
+  end
 end

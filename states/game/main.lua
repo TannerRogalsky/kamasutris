@@ -14,8 +14,8 @@ function Main:enteredState()
   --   end
   -- end)
 
-  self.grid:set_block(Block:new(10/2 - math.floor(5/2), 10/2 - math.floor(5/2)))
-  self.grid:set_block(Block:new(10/2 - math.floor(5/2) - 1, 10/2 - math.floor(5/2) - 1))
+  self.grid:set_block(Block:new(2, 2))
+  self.grid:set_block(Block:new(3, 3))
 end
 
 function Main:update(dt)
@@ -29,6 +29,7 @@ function Main:render()
 
   self.grid:render()
 
+  g.setColor(COLORS.red:rgb())
   self.active_block:render()
 
   self.camera:unset()

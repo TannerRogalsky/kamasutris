@@ -3,12 +3,6 @@ Grid.static.game_board_size = {x = 20, y = 20}
 Grid.static.cell_size = {width = 25, height = 25}
 
 local tween_timing = 1
-local draw_modes = {
-  [false] = "line",
-  [true] = "fill",
-  [1] = "fill",
-  [0] = "line",
-}
 
 function Grid:initialize()
   AbstractGrid.initialize(self, Grid.game_board_size.x, Grid.game_board_size.y)
@@ -24,6 +18,7 @@ function Grid:rotate_to(angle)
 
   for _,block in pairs(self.blocks) do
     block:rotate_to(angle)
+    print(block:get_coords())
   end
 
   tween.stop(self.tween)
@@ -75,9 +70,11 @@ function Grid:render()
     for j,cell in ipairs(row) do
       local x, y , w, h = (i - 1) * Grid.cell_size.width, (j - 1) * Grid.cell_size.height, Grid.cell_size.width, Grid.cell_size.height
       -- use 0 orientation here because it's just rendering and the canvas will be rotated instead
-      local value = self:get(i,j, 0)
-      g.rectangle(draw_modes[value], x, y, w, h)
+      g.rectangle("line", x, y, w, h)
     end
+  end
+  for id,block in pairs(self.blocks) do
+    block:render(0)
   end
   g.setCanvas()
   local center_x, center_y = self.pixel_size.width / 2, self.pixel_size.height / 2
