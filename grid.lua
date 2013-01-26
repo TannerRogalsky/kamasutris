@@ -35,6 +35,8 @@ end
 -- block is set on the board and rotates with the board now
 function Grid:set_block(block)
   block = block:copy()
+  block:rotate_data_to(block.orientation, self.orientation)
+  block.orientation = 0
   local block_x, block_y = block.x, block.y
   self.blocks[block.id] = block
 
@@ -61,11 +63,12 @@ function Grid:set_block(block)
     for j = start_y, end_y, step_y do
       local cell = block:get(i, j)
       if cell == 1 then
-        print(i, j, block_x, block_y)
+        -- print(i, j, block_x, block_y)
         self:set(i + block_x, j + block_y, cell)
       end
     end
   end
+  print(self)
   print("**********")
 end
 

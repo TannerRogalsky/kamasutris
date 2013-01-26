@@ -62,3 +62,39 @@ function Block:get_coords(orientation)
     return self.x, Grid.game_board_size.y - self.y
   end
 end
+
+function Block:rotate_data_to(angle, grid_angle)
+  local angle_quad = angle / 90 % 4
+
+  local temp = {{},{},{},{},{}}
+  for i,row in ipairs(self) do
+    for j,cell in ipairs(row) do
+      if angle_quad == 0 then
+        temp[i][j] = self[i][j]
+      elseif angle_quad == 1 then
+        temp[i][j] = self[j][#self - i + 1]
+      elseif angle_quad == 2 then
+        temp[i][j] = self[#self - i + 1][#self - j + 1]
+      elseif angle_quad == 3 then
+        temp[i][j] = self[#self - j + 1][i]
+      end
+    end
+  end
+
+  for i,row in ipairs(self) do
+    self[i] = temp[i]
+  end
+
+  -- angle_quad = grid_angle / 90 % 4
+  -- print(self.x, self.y)
+  -- if angle_quad == 0 then
+  --   self.x, self.y = self.x, self.y
+  -- elseif angle_quad == 1 then
+  --   self.x, self.y = Grid.game_board_size.x - self.x, self.y
+  -- elseif angle_quad == 2 then
+  --   self.x, self.y = Grid.game_board_size.x - self.x, Grid.game_board_size.y - self.y
+  -- elseif angle_quad == 3 then
+  --   self.x, self.y = self.x, Grid.game_board_size.y - self.y
+  -- end
+  -- print(self.x, self.y)
+end
