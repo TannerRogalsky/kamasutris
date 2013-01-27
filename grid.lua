@@ -1,6 +1,6 @@
 Grid = class('Grid', AbstractGrid)
-Grid.static.game_board_size = {x = 20, y = 20}
-Grid.static.cell_size = {width = 25, height = 25}
+Grid.static.game_board_size = {x = 14, y = 14}
+Grid.static.cell_size = {width = 49, height = 49}
 
 -- Library setup
 local JGrid = require ("lib.jumper.jumper.grid") -- The grid class
@@ -15,6 +15,8 @@ function Grid:initialize()
   self.pixel_size = {width = Grid.game_board_size.x * Grid.cell_size.width, height = Grid.game_board_size.y * Grid.cell_size.height}
   self.canvas = g.newCanvas(self.pixel_size.width, self.pixel_size.height)
   self.blocks = {}
+
+  self.background = game.preloaded_image["bg_floor.png"]
 
   self.penalized_cells = {}
   for i,v in ipairs(self) do
@@ -143,6 +145,7 @@ function Grid:render()
   g.setCanvas(self.canvas)
   g.clear()
   g.setColor(COLORS.white:rgb())
+  g.draw(self.background, 0, 0, 0, self.pixel_size.width / self.background:getWidth(), self.pixel_size.height / self.background:getHeight())
   for i,row in ipairs(self) do
     for j,cell in ipairs(row) do
       local x, y , w, h = (i - 1) * Grid.cell_size.width, (j - 1) * Grid.cell_size.height, Grid.cell_size.width, Grid.cell_size.height
