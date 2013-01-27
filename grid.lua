@@ -2,6 +2,10 @@ Grid = class('Grid', AbstractGrid)
 Grid.static.game_board_size = {x = 20, y = 20}
 Grid.static.cell_size = {width = 25, height = 25}
 
+-- Library setup
+local JGrid = require ("lib.jumper.jumper.grid") -- The grid class
+local Pathfinder = require ("lib.jumper.jumper.pathfinder") -- The pathfinder lass
+
 local tween_timing = 1
 
 function Grid:initialize()
@@ -11,6 +15,11 @@ function Grid:initialize()
   self.pixel_size = {width = Grid.game_board_size.x * Grid.cell_size.width, height = Grid.game_board_size.y * Grid.cell_size.height}
   self.canvas = g.newCanvas(self.pixel_size.width, self.pixel_size.height)
   self.blocks = {}
+
+  self.penalized_cells = {}
+  for i,v in ipairs(self) do
+    self.penalized_cells[i] = v
+  end
 end
 
 function Grid:rotate_to(angle)
@@ -59,15 +68,52 @@ function Grid:set_block(block)
   --   start_y, end_y, step_y = #block, 1, -1
   -- end
 
+  -- Value for walkable tiles
+  local walkable = 0
+  local temp_map = {}
+  for i,v in ipairs(self) do
+    temp_map[i] = v
+  end
+
+  -- Creates a grid object
+  local grid = JGrid(temp_map)
+  -- Creates a pathfinder object using Jump Point Search
+  local myFinder = Pathfinder('JPS', grid, walkable)
+
+  local end_points = {}
+  end_points = {{1, 1}, {1, Grid.game_board_size.y},
+    {Grid.game_board_size.x, Grid.game_board_size.y}, {Grid.game_board_size.x, 1}}
+
   for i = start_x, end_x, step_x do
     for j = start_y, end_y, step_y do
       local cell = block:get(i, j)
+      local x, y = i + block_x - 1, j + block_y - 1
       if cell >= 1 then
         -- print(i, j, block_x, block_y)
-        self:set(i + block_x - 1, j + block_y - 1, cell)
+        self:set(x, y, cell)
       end
     end
   end
+
+  for i = start_x, end_x, step_x do
+    for j = start_y, end_y, step_y do
+      local cell = block:get(i, j)
+      local x, y = i + block_x - 1, j + block_y - 1
+      if cell == 0 then
+        for _,end_point in ipairs(end_points) do
+          local endx, endy = unpack(end_point)
+          local path, length = myFinder:getPath(x, y, endx, endy)
+
+          if path then
+            print("good")
+          else
+            print("bad")
+          end
+        end
+      end
+    end
+  end
+
   print(self)
 end
 
