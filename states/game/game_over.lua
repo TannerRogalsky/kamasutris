@@ -1,7 +1,7 @@
 local GameOver = Game:addState('GameOver')
 
 function GameOver:enteredState()
-  local sound_bite = game.preloaded_audio["game_over" .. math.random(3) .. ".ogg"]
+  local sound_bite = game.preloaded_audio["game_over" .. math.random(5) .. ".ogg"]
   sound_bite:setVolume(0.4)
   sound_bite:play()
 end
