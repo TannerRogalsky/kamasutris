@@ -31,11 +31,11 @@ function Game:keyreleased(key, unicode)
 end
 
 function Game:joystickpressed(joystick, button)
-  print(joystick, button)
+  -- print(joystick, button)
 end
 
 function Game:joystickreleased(joystick, button)
-  print(joystick, button)
+  -- print(joystick, button)
 end
 
 function Game:focus(has_focus)

@@ -1,14 +1,10 @@
 local Main = Game:addState('Main')
 
 function Main:enteredState()
-  -- self.background_music = self.preloaded_audio["main_theme.ogg"]
-  -- self.background_music:play()
-  -- self.background_music:setLooping(true)
-
   self.grid = Grid:new()
   self.background_music = self.preloaded_audio["main_theme.ogg"]
-  self.background_music:play()
-  self.background_music:setLooping(true)
+  -- self.background_music:play()
+  -- self.background_music:setLooping(true)
 
   self.grid:set_block(Block:new(Grid.game_board_size.x / 2 - 2, Grid.game_board_size.y / 2 - 2, self.grid))
   -- self.grid:set_block(Block:new(5, 7, self.grid, "j"))
@@ -40,9 +36,9 @@ function Main:new_drop()
   if self.grid.active_block == nil then
     local directions =  {
       up = {5, 0, 0, 1},
-      right = {15, 5, -1, 0},
+      right = {10, 5, -1, 0},
       left = {0, 5, 1, 0},
-      down = {5, 20, 0, -1}
+      down = {5, 10, 0, -1}
     }
     local choices = {}
     for k,v in pairs(directions) do
@@ -50,7 +46,7 @@ function Main:new_drop()
     end
     local choice_index = choices[math.random(#choices)]
     -- choice_index = "left"
-    print(choice_index)
+    -- print(choice_index)
     local choice = directions[choice_index]
 
     self.grid.active_block = Block:new(choice[1], choice[2], self.grid)

@@ -91,7 +91,7 @@ function Grid:set_block(block)
       local cell = block:get(i, j)
       local x, y = i + block_x - 1, j + block_y - 1
       if cell >= 1 then
-        -- print(i, j, block_x, block_y)
+        -- -- print(i, j, block_x, block_y)
         self:set(x, y, cell)
       end
     end
@@ -107,16 +107,16 @@ function Grid:set_block(block)
           local path, length = myFinder:getPath(x, y, endx, endy)
 
           if path then
-            print("good")
+            -- -- print("good")
           else
-            print("bad")
+            -- -- print("bad")
           end
         end
       end
     end
   end
 
-  print(self)
+  -- print(self)
 end
 
 function Grid:collides_with(block, orientation)
@@ -126,14 +126,14 @@ function Grid:collides_with(block, orientation)
       local grid_cell = self:get(i + block.x - 1, j + block.y - 1)
 
       if block_cell >= 1 and grid_cell >= 1 then
-        print(i, j, block.x, block.y, i + block.x, j + block.y)
+        -- print(i, j, block.x, block.y, i + block.x, j + block.y)
         return true
       end
     end
   end
   -- for id,other_block in pairs(self.blocks) do
   --   if block:collides_with(other_block) then
-  --     print(block, other_block)
+  --     -- print(block, other_block)
   --     return true
   --   end
   -- end

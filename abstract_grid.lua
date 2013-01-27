@@ -26,7 +26,7 @@ end
 
 function AbstractGrid:get(x, y, orientation)
   if x > #self or y > #self or x < 1 or y < 1 then
-    -- print("out of bounds")
+    -- -- print("out of bounds")
     return 0
   end
 
