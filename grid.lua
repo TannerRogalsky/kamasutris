@@ -97,6 +97,7 @@ function Grid:set_block(block)
     end
   end
 
+  local good_connect = true
   for i = start_x, end_x, step_x do
     for j = start_y, end_y, step_y do
       local cell = block:get(i, j)
@@ -107,13 +108,37 @@ function Grid:set_block(block)
           local path, length = myFinder:getPath(x, y, endx, endy)
 
           if path then
+            -- game.score = game.score + 5
+            good_connect = true
             -- -- print("good")
-          else
+          elseif self.penalized_cells[x][y] == 0 then
+            good_connect = false
+            self.penalized_cells[x][y] = 1
+            break
             -- -- print("bad")
           end
         end
       end
+      if good_connect == false then break end
     end
+    if good_connect == false then break end
+  end
+
+  local sounds = {
+    good_m = 7,
+    good_f = 3,
+    bad_m = 4,
+    bad_f = 3
+  }
+
+  if good_connect then
+    game.score = game.score + 5
+    local pretext = "good_" .. block.gender
+    game.preloaded_audio[pretext .. math.random(sounds[pretext]) .. ".ogg"]:play()
+  else
+    game.score = game.score - 2
+    local pretext = "bad_" .. block.gender
+    game.preloaded_audio[pretext .. math.random(sounds[pretext]) .. ".ogg"]:play()
   end
 
   -- print(self)
@@ -146,13 +171,13 @@ function Grid:render()
   g.clear()
   g.setColor(COLORS.white:rgb())
   g.draw(self.background, 0, 0, 0, self.pixel_size.width / self.background:getWidth(), self.pixel_size.height / self.background:getHeight())
-  for i,row in ipairs(self) do
-    for j,cell in ipairs(row) do
-      local x, y , w, h = (i - 1) * Grid.cell_size.width, (j - 1) * Grid.cell_size.height, Grid.cell_size.width, Grid.cell_size.height
-      -- use 0 orientation here because it's just rendering and the canvas will be rotated instead
-      g.rectangle("line", x, y, w, h)
-    end
-  end
+  -- for i,row in ipairs(self) do
+  --   for j,cell in ipairs(row) do
+  --     local x, y , w, h = (i - 1) * Grid.cell_size.width, (j - 1) * Grid.cell_size.height, Grid.cell_size.width, Grid.cell_size.height
+  --     -- use 0 orientation here because it's just rendering and the canvas will be rotated instead
+  --     g.rectangle("line", x, y, w, h)
+  --   end
+  -- end
   for id,block in pairs(self.blocks) do
     block:render(0)
   end

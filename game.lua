@@ -9,6 +9,8 @@ function Game:initialize()
   self.font = g.newFont(16)
   g.setFont(self.font)
 
+  self.score_font = g.newFont("Lemondrop.ttf", 32)
+
   self:gotoState("Loading")
 end
 

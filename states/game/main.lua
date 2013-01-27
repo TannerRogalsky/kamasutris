@@ -1,12 +1,14 @@
 local Main = Game:addState('Main')
 
 function Main:enteredState()
+  self.score = 0
   self.grid = Grid:new()
   self.background_music = self.preloaded_audio["main_theme.ogg"]
-  -- self.background_music:play()
-  -- self.background_music:setLooping(true)
+  self.background_music:play()
+  self.background_music:setLooping(true)
 
   self.grid:set_block(Block:new(Grid.game_board_size.x / 2 - 2, Grid.game_board_size.y / 2 - 2, self.grid))
+  self.score = 0
   -- self.grid:set_block(Block:new(5, 7, self.grid, "j"))
   -- self.grid:set_block(Block:new(1, 1, self.grid, "o"))
 
@@ -28,6 +30,11 @@ function Main:render()
     -- g.setColor(COLORS.red:rgb())
     self.grid.active_block:render()
   end
+
+  g.setColor(COLORS.white:rgb())
+  g.draw(self.preloaded_image["scoreheart.png"], 0, 0)
+  g.setFont(self.score_font)
+  g.print(self.score, 42, -10)
 
   self.camera:unset()
 end
