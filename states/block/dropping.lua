@@ -2,7 +2,7 @@ local Dropping = Block:addState('Dropping')
 
 function Dropping:enteredState(vel_x, vel_y)
   self.velocity = {x = vel_x, y = vel_y}
-  cron.every(1, self.tick, self)
+  cron.every(drop_speed, self.tick, self)
 
   self.ticked = 0
 end

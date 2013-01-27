@@ -4,6 +4,9 @@ function Main:enteredState()
   self.score = 0
   self.grid = Grid:new()
 
+  drop_speed = 1
+  self.num_dropped = 0
+
   self.grid:set_block(Block:new(Grid.game_board_size.x / 2 - 2, Grid.game_board_size.y / 2 - 2, self.grid))
   self.score = 0
   -- self.grid:set_block(Block:new(5, 7, self.grid, "j"))
@@ -59,6 +62,11 @@ function Main:new_drop()
 
     self.grid.active_block = Block:new(choice[1], choice[2], self.grid)
     self.grid.active_block:gotoState("Dropping", choice[3], choice[4])
+
+    self.num_dropped = self.num_dropped + 1
+    if self.num_dropped % 3 == 0 then
+      drop_speed = drop_speed / 2
+    end
   end
 end
 
