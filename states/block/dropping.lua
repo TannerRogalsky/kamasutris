@@ -34,6 +34,9 @@ function Dropping:move_up()
   -- print(self.velocity.x, self.velocity.y)
   if self.velocity.x ~= 0 then
     self.y = self.y - 1
+    if self.parent:collides_with(self) then
+      self.y = self.y + 1
+    end
   end
 end
 
@@ -41,6 +44,9 @@ function Dropping:move_left()
   -- print(self.velocity.x, self.velocity.y)
   if self.velocity.y ~= 0 then
     self.x = self.x - 1
+    if self.parent:collides_with(self) then
+      self.x = self.x + 1
+    end
   end
 end
 
@@ -48,6 +54,9 @@ function Dropping:move_down()
   -- print(self.velocity.x, self.velocity.y)
   if self.velocity.x ~= 0 then
     self.y = self.y + 1
+    if self.parent:collides_with(self) then
+      self.y = self.y - 1
+    end
   end
 end
 
@@ -55,6 +64,9 @@ function Dropping:move_right()
   -- print(self.velocity.x, self.velocity.y)
   if self.velocity.y ~= 0 then
     self.x = self.x + 1
+    if self.parent:collides_with(self) then
+      self.x = self.x - 1
+    end
   end
 end
 
