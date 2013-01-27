@@ -62,7 +62,7 @@ function Grid:set_block(block)
   for i = start_x, end_x, step_x do
     for j = start_y, end_y, step_y do
       local cell = block:get(i, j)
-      if cell == 1 then
+      if cell >= 1 then
         -- print(i, j, block_x, block_y)
         self:set(i + block_x - 1, j + block_y - 1, cell)
       end
@@ -77,7 +77,7 @@ function Grid:collides_with(block, orientation)
       local block_cell = block:get(i, j)
       local grid_cell = self:get(i + block.x - 1, j + block.y - 1)
 
-      if block_cell == 1 and grid_cell == 1 then
+      if block_cell >= 1 and grid_cell >= 1 then
         print(i, j, block.x, block.y, i + block.x, j + block.y)
         return true
       end
@@ -107,6 +107,7 @@ function Grid:render()
   for id,block in pairs(self.blocks) do
     block:render(0)
   end
+  g.setColor(COLORS.white:rgb())
   g.setCanvas()
   local center_x, center_y = self.pixel_size.width / 2, self.pixel_size.height / 2
   local offset_x, offset_y = self.pixel_size.width / 2, self.pixel_size.height / 2

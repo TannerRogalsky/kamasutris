@@ -21,15 +21,25 @@ function Block:initialize(x, y, grid, shape_type)
     end
   end
 
+  -- self.image = game.preloaded_image["sprite_" .. shape_type .. ".png"]
+
   self.orientation = 0
 end
+
+local c = {
+  [1] = "red",
+  [2] = "blue",
+  [3] = "green",
+  [4] = "yellow"
+}
 
 function Block:render(orientation)
   local cell_w, cell_h = Grid.cell_size.width, Grid.cell_size.height
   for i,row in ipairs(self) do
     for j,_ in ipairs(row) do
       local cell = self:get(i, j, orientation)
-      if cell == 1 then
+      if cell >= 1 then
+        g.setColor(COLORS[c[cell]]:rgb())
         g.rectangle("fill", (i + self.x - 1) * cell_w, (j + self.y - 1) * cell_h, cell_w, cell_h)
       end
     end

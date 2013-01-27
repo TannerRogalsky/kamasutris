@@ -26,7 +26,7 @@ function Main:render()
   self.grid:render()
 
   if self.grid.active_block then
-    g.setColor(COLORS.red:rgb())
+    -- g.setColor(COLORS.red:rgb())
     self.grid.active_block:render()
   end
 
