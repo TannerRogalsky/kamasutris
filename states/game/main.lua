@@ -3,9 +3,6 @@ local Main = Game:addState('Main')
 function Main:enteredState()
   self.score = 0
   self.grid = Grid:new()
-  self.background_music = self.preloaded_audio["main_theme.ogg"]
-  self.background_music:play()
-  self.background_music:setLooping(true)
 
   self.grid:set_block(Block:new(Grid.game_board_size.x / 2 - 2, Grid.game_board_size.y / 2 - 2, self.grid))
   self.score = 0

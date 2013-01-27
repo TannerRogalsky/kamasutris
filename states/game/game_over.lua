@@ -12,7 +12,8 @@ function GameOver:render()
   g.draw(bg, 0, 0, 0, g.getWidth() / bg:getWidth(), g.getHeight() / bg:getHeight())
 
   g.setFont(self.score_font)
-  g.print(self.score, 360, 367)
+  local text = "Score: " .. self.score
+  g.print(text, g.getWidth() / 2 - self.score_font:getWidth(text) / 2, g.getHeight() / 2)
 end
 
 function GameOver:mousepressed(x, y, button)
