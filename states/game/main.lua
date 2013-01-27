@@ -6,6 +6,9 @@ function Main:enteredState()
   -- self.background_music:setLooping(true)
 
   self.grid = Grid:new()
+  self.background_music = self.preloaded_audio["main_theme.ogg"]
+  self.background_music:play()
+  self.background_music:setLooping(true)
 
   self.grid:set_block(Block:new(5, 5, self.grid, "l"))
   self.grid:set_block(Block:new(5, 7, self.grid, "j"))
