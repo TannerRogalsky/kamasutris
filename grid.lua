@@ -105,17 +105,19 @@ function Grid:set_block(block)
       if cell == 0 then
         for _,end_point in ipairs(end_points) do
           local endx, endy = unpack(end_point)
-          local path, length = myFinder:getPath(x, y, endx, endy)
+          local success, path, length = pcall(myFinder.getPath, myFinder, x, y, endx, endy)
 
-          if path then
-            -- game.score = game.score + 5
-            good_connect = true
-            -- -- print("good")
-          elseif self.penalized_cells[x][y] == 0 then
-            good_connect = false
-            self.penalized_cells[x][y] = 1
-            break
-            -- -- print("bad")
+          if success then
+            if path then
+              -- game.score = game.score + 5
+              good_connect = true
+              -- -- print("good")
+            elseif self.penalized_cells[x][y] == 0 then
+              good_connect = false
+              self.penalized_cells[x][y] = 1
+              break
+              -- -- print("bad")
+            end
           end
         end
       end
@@ -127,11 +129,15 @@ function Grid:set_block(block)
   if good_connect then
     game.score = game.score + 5
     local pretext = "good_" .. block.gender
-    game.preloaded_audio[pretext .. math.random(Game.sounds[pretext]) .. ".ogg"]:play()
+    local sound_bite = game.preloaded_audio[pretext .. math.random(Game.sounds[pretext]) .. ".ogg"]
+    sound_bite:setVolume(0.4)
+    sound_bite:play()
   else
     game.score = game.score - 2
     local pretext = "bad_" .. block.gender
-    game.preloaded_audio[pretext .. math.random(Game.sounds[pretext]) .. ".ogg"]:play()
+    local sound_bite = game.preloaded_audio[pretext .. math.random(Game.sounds[pretext]) .. ".ogg"]
+    sound_bite:setVolume(0.4)
+    sound_bite:play()
   end
 
   -- print(self)

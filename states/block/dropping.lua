@@ -17,7 +17,9 @@ function Dropping:tick()
   if self.ticked > Grid.game_board_size.x then
     game.score = game.score - 10
     local pretext = "bad_" .. self.gender
-    game.preloaded_audio[pretext .. math.random(Game.sounds[pretext]) .. ".ogg"]:play()
+    local sound_bite = game.preloaded_audio[pretext .. math.random(Game.sounds[pretext]) .. ".ogg"]
+    sound_bite:setVolume(0.4)
+    sound_bite:play()
 
     self:gotoState(nil)
     game:new_drop()
@@ -32,7 +34,9 @@ function Dropping:tick()
     self.x, self.y = old_x, old_y
     self.parent:set_block(self)
     self:gotoState(nil)
-    game:new_drop()
+    if game.new_drop then
+      game:new_drop()
+    end
   end
 end
 

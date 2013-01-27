@@ -12,6 +12,9 @@ function AbstractGrid:initialize(width, height)
     end
   end
 
+  self.grid_width = width
+  self.grid_height = height
+
   self.orientation = 0
 end
 
@@ -45,6 +48,14 @@ function AbstractGrid:get(x, y, orientation)
 end
 
 function AbstractGrid:set(x, y, value, orientation)
+  if x <= 0 or
+     y <= 0 or
+     x > self.grid_width or
+     y > self.grid_height then
+     game:gotoState("GameOver")
+     return
+   end
+
   orientation = orientation or self.orientation
   local angle_quad = orientation / 90 % 4
 

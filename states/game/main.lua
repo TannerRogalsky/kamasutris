@@ -16,6 +16,10 @@ function Main:enteredState()
 end
 
 function Main:update(dt)
+  if self.score < 0 then
+    self:gotoState("GameOver")
+  end
+
   cron.update(dt)
   tween.update(dt)
   -- self.grid:update(dt)
@@ -42,10 +46,10 @@ end
 function Main:new_drop()
   if self.grid.active_block == nil then
     local directions =  {
-      up = {5, 0, 0, 1},
-      right = {10, 5, -1, 0},
-      left = {0, 5, 1, 0},
-      down = {5, 10, 0, -1}
+      up = {Grid.game_board_size.x / 2, 0, 0, 1},
+      right = {Grid.game_board_size.x, Grid.game_board_size.x / 2, -1, 0},
+      left = {-3, Grid.game_board_size.x / 2, 1, 0},
+      down = {Grid.game_board_size.x / 2, Grid.game_board_size.x, 0, -1}
     }
     local choices = {}
     for k,v in pairs(directions) do
@@ -68,8 +72,8 @@ function Main:mousereleased(x, y, button)
 end
 
 local control_map = {
-  left = function(self) self.grid:rotate(-90) end,
-  right = function(self) self.grid:rotate(90) end,
+  -- left = function(self) self.grid:rotate(-90) end,
+  -- right = function(self) self.grid:rotate(90) end,
   [" "] = function(self) self.grid.active_block:rotate(90) end,
   w = function(self) self.grid.active_block:move_up() end,
   a = function(self) self.grid.active_block:move_left() end,
@@ -96,6 +100,7 @@ function Main:focus(has_focus)
 end
 
 function Main:exitedState()
+  cron.reset()
 end
 
 return Main
