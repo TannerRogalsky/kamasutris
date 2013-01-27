@@ -124,21 +124,14 @@ function Grid:set_block(block)
     if good_connect == false then break end
   end
 
-  local sounds = {
-    good_m = 7,
-    good_f = 3,
-    bad_m = 4,
-    bad_f = 3
-  }
-
   if good_connect then
     game.score = game.score + 5
     local pretext = "good_" .. block.gender
-    game.preloaded_audio[pretext .. math.random(sounds[pretext]) .. ".ogg"]:play()
+    game.preloaded_audio[pretext .. math.random(Game.sounds[pretext]) .. ".ogg"]:play()
   else
     game.score = game.score - 2
     local pretext = "bad_" .. block.gender
-    game.preloaded_audio[pretext .. math.random(sounds[pretext]) .. ".ogg"]:play()
+    game.preloaded_audio[pretext .. math.random(Game.sounds[pretext]) .. ".ogg"]:play()
   end
 
   -- print(self)

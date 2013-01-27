@@ -1,4 +1,10 @@
 Game = class('Game', Base):include(Stateful)
+Game.static.sounds = {
+  good_m = 7,
+  good_f = 3,
+  bad_m = 4,
+  bad_f = 3
+}
 
 function Game:initialize()
   Base.initialize(self)
