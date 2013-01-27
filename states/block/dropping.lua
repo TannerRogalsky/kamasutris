@@ -70,4 +70,17 @@ function Dropping:move_right()
   end
 end
 
+function Dropping:rotate(angle)
+  return self:rotate_to(self.orientation + angle)
+end
+
+function Dropping:rotate_to(angle)
+  local old_angle = self.orientation
+  self.orientation = angle
+  if self.parent:collides_with(self) then
+    self.orientation = old_angle
+  end
+  return self.orientation
+end
+
 return Dropping
