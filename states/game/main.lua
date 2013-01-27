@@ -10,9 +10,9 @@ function Main:enteredState()
   self.background_music:play()
   self.background_music:setLooping(true)
 
-  self.grid:set_block(Block:new(5, 5, self.grid, "l"))
-  self.grid:set_block(Block:new(5, 7, self.grid, "j"))
-  self.grid:set_block(Block:new(1, 1, self.grid, "o"))
+  self.grid:set_block(Block:new(Grid.game_board_size.x / 2 - 2, Grid.game_board_size.y / 2 - 2, self.grid))
+  -- self.grid:set_block(Block:new(5, 7, self.grid, "j"))
+  -- self.grid:set_block(Block:new(1, 1, self.grid, "o"))
 
   self:new_drop()
 end
