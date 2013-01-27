@@ -43,9 +43,12 @@ function Block:collides_with(other)
   for i,row in ipairs(self) do
     for j,cell in ipairs(row) do
       local self_cell = self:get(i, j)
-      local other_cell = other:get(i + offset_x, j + offset_y)
+      local other_cell = other.parent:get(i + offset_x, j + offset_y)
 
       if self_cell == 1 and other_cell == 1 then
+        print(self.x, self.y, other.x, other.y)
+        print(self.x + i, self.y + j, i + offset_x, j + offset_y, other.x + i, other.y + j, offset_x, offset_y)
+        print(self:get(i, j), self[i][j])
         return true
       end
     end

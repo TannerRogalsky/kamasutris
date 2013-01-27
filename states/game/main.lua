@@ -7,8 +7,9 @@ function Main:enteredState()
 
   self.grid = Grid:new()
 
-  self.grid:set_block(Block:new(5, 5, self.grid))
-  self.grid:set_block(Block:new(7, 7, self.grid))
+  self.grid:set_block(Block:new(5, 5, self.grid, "l"))
+  self.grid:set_block(Block:new(5, 7, self.grid, "j"))
+  self.grid:set_block(Block:new(1, 1, self.grid, "o"))
 
   self:new_drop()
 end
@@ -45,6 +46,7 @@ function Main:new_drop()
       table.insert(choices, k)
     end
     local choice_index = choices[math.random(#choices)]
+    -- choice_index = "left"
     print(choice_index)
     local choice = directions[choice_index]
 

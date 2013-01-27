@@ -14,7 +14,7 @@ function Dropping:tick()
   local new_y, old_y = self.y + self.velocity.y, self.y
   -- tween(1, self, {x = new_x, y = new_y})
   self.x, self.y = new_x, new_y
-
+  print(self.x, self.y)
   if self.parent:collides_with(self) then
     self.x, self.y = old_x, old_y
     self.parent:set_block(self)
@@ -31,24 +31,28 @@ function Dropping:exitedState()
 end
 
 function Dropping:move_up()
+  print(self.velocity.x, self.velocity.y)
   if self.velocity.x ~= 0 then
     self.y = self.y - 1
   end
 end
 
 function Dropping:move_left()
+  print(self.velocity.x, self.velocity.y)
   if self.velocity.y ~= 0 then
     self.x = self.x - 1
   end
 end
 
 function Dropping:move_down()
+  print(self.velocity.x, self.velocity.y)
   if self.velocity.x ~= 0 then
     self.y = self.y + 1
   end
 end
 
 function Dropping:move_right()
+  print(self.velocity.x, self.velocity.y)
   if self.velocity.y ~= 0 then
     self.x = self.x + 1
   end

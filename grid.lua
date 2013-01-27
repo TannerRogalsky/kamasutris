@@ -64,7 +64,7 @@ function Grid:set_block(block)
       local cell = block:get(i, j)
       if cell == 1 then
         -- print(i, j, block_x, block_y)
-        self:set(i + block_x, j + block_y, cell)
+        self:set(i + block_x - 1, j + block_y - 1, cell)
       end
     end
   end
@@ -72,22 +72,23 @@ function Grid:set_block(block)
 end
 
 function Grid:collides_with(block, orientation)
-  -- for i,row in ipairs(block) do
-  --   for j,_ in ipairs(row) do
-  --     local block_cell = block:get(i, j)
-  --     local grid_cell = self:get(i + block.x, j + block.y)
+  for i,row in ipairs(block) do
+    for j,_ in ipairs(row) do
+      local block_cell = block:get(i, j)
+      local grid_cell = self:get(i + block.x - 1, j + block.y - 1)
 
-  --     if block_cell == 1 and grid_cell == 1 then
-  --       return true
-  --     end
-  --   end
-  -- end
-  for id,other_block in pairs(self.blocks) do
-    if block:collides_with(other_block) then
-      print(block, other_block)
-      return true
+      if block_cell == 1 and grid_cell == 1 then
+        print(i, j, block.x, block.y, i + block.x, j + block.y)
+        return true
+      end
     end
   end
+  -- for id,other_block in pairs(self.blocks) do
+  --   if block:collides_with(other_block) then
+  --     print(block, other_block)
+  --     return true
+  --   end
+  -- end
 
   return false
 end
@@ -115,7 +116,7 @@ function Grid:render()
 end
 
 function Grid:__tostring()
-  local strings, result = {}, ""
+  local strings, result = {}, "    "
 
   for i,row in ipairs(self) do
     for j,cell in ipairs(row) do
@@ -125,7 +126,16 @@ function Grid:__tostring()
   end
 
   for i = 1, Grid.game_board_size.y do
-    result = result .. table.concat(strings[i], ", ") .. "\n"
+    result = result .. i .. ", "
+  end
+  result = result .. "\n"
+
+  for i = 1, Grid.game_board_size.y do
+    if i >= 10 then
+      result = result .. i .. ": " .. table.concat(strings[i], ", ") .. "\n"
+    else
+      result = result .. i .. ":  " .. table.concat(strings[i], ", ") .. "\n"
+    end
   end
 
   return result
