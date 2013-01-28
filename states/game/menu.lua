@@ -22,15 +22,7 @@ function Menu:mousepressed(x, y, button)
   self:gotoState("Main")
 end
 
-function Menu:mousereleased(x, y, button)
-  self:gotoState("Main")
-end
-
 function Menu:keypressed(key, unicode)
-  self:gotoState("Main")
-end
-
-function Menu:keyreleased(key, unicode)
   self:gotoState("Main")
 end
 

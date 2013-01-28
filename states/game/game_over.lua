@@ -20,15 +20,7 @@ function GameOver:mousepressed(x, y, button)
   self:gotoState("Menu")
 end
 
-function GameOver:mousereleased(x, y, button)
-  self:gotoState("Menu")
-end
-
 function GameOver:keypressed(key, unicode)
-  self:gotoState("Menu")
-end
-
-function GameOver:keyreleased(key, unicode)
   self:gotoState("Menu")
 end
 
