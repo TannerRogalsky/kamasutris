@@ -64,9 +64,9 @@ function Main:new_drop()
     self.grid.active_block:gotoState("Dropping", choice[3], choice[4])
 
     self.num_dropped = self.num_dropped + 1
-    if self.num_dropped % 3 == 0 then
-      drop_speed = drop_speed / 2
-    end
+    -- if self.num_dropped % 3 == 0 then
+    --   drop_speed = drop_speed / 2
+    -- end
   end
 end
 
